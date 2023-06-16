@@ -11,13 +11,26 @@ namespace LBA_Negocio.Biblioteca
         {
             _PruebaRepository = pruebaRepository;
         }
-        public async Task<string> ObtenerToken()
+        public async Task<string> ConsultaEstudiantes()
         {
-            string resultado = await _PruebaRepository.ObtenerToken();         
+            var resultado = await _PruebaRepository.ConsultaEstudiantes();
             return resultado;
         }
-       
-
+        public async Task<string> ConsultaModulos()
+        {
+            var resultado = await _PruebaRepository.ConsultaModulos();
+            return resultado;
+        }
+        public async Task<string> ConsultaClases()
+        {
+            var resultado = await _PruebaRepository.ConsultaClases();
+            return resultado;
+        } 
+        public async Task<string> ConsultaModuloClaseEstudiante(int idEstudiante)
+        {
+            var resultado = await _PruebaRepository.ConsultaModuloClaseEstudiante(idEstudiante);
+            return resultado;
+        }
 
     }
 }

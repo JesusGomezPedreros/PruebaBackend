@@ -5,10 +5,14 @@ namespace LBA_Infraestructura.Contratos
 {
     public interface IPruebaRepository
     {
-        Task<string> ObtenerToken();
-        Task<string> ConteoVehiculos(InformacionDto informacionDto);
-        Task<string> RecaudoVehiculos(InformacionDto informacionDto);
-        Task<string> RegistrarLibros(ComandoRegistroViewModel comandoRegistroViewModel);
+
+        Task<string> ConsultaEstudiantes();
+        Task<string> ConsultaModulos();
+        Task<string> ConsultaClases();
+        Task<string> RegistrarEstudiantes(ComandoRegistroViewModel comandoRegistroViewModel);
+        Task<string> InscribirModuloClase(ComandoInscribirModuloClaseViewModel claseViewModel);
+        Task<string> ConsultaModuloClaseEstudiante(int idEstudiante);
+
 
     }
 }

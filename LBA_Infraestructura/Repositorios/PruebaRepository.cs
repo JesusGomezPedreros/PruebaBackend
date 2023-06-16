@@ -1,51 +1,70 @@
 ﻿using LBA_Dominios.ModelosComandos;
-using LBA_Dominios.ModelosConsultas;
 using LBA_Infraestructura.Contratos;
-using LBA_Services;
-using NpgsqlTypes;
 using System.Data;
 using System.Data.SqlClient;
-using System.Text.Json;
 
 namespace LBA_Infraestructura.Repositorios
 {
     public class PruebaRepository : Repository, IPruebaRepository
     {
         private SqlCommand _comandogeneral;
-        private readonly UserServices _userServices;
-        public PruebaRepository(UserServices userServices)
+
+        public PruebaRepository()
         {
-            _userServices = userServices;
             _comandogeneral = new SqlCommand();
         }
-        //Obtiene Token
-        public Task<string> ObtenerToken()
+        // Consulta de estudiantes
+        public async Task<string> ConsultaEstudiantes()
         {
-            var resultado = _userServices.LoginUser();
+            _comandogeneral.Parameters.Clear();
+            var resultado = await EjecutarFuncion(_comandogeneral, "LeerInformacionEstudiantes");
+            return resultado;
+        }
+        // Consulta de módulos
+        public async Task<string> ConsultaModulos()
+        {
+            _comandogeneral.Parameters.Clear();
+            var resultado = await EjecutarFuncion(_comandogeneral, "LeerModulos");
+            return resultado;
+        }
+        // Consulta de clases
+        public async Task<string> ConsultaClases()
+        {
+            _comandogeneral.Parameters.Clear();
+            var resultado = await EjecutarFuncion(_comandogeneral, "LeerClases");
             return resultado;
         }
 
-        public async Task<string> ConteoVehiculos(InformacionDto informacionDto)
-        {
-            var resultado = _userServices.ConteoVehiculos(informacionDto);            
-            return resultado.Result;
-        }
-        public async Task<string> RecaudoVehiculos(InformacionDto informacionDto)
-        {
-            var resultado = _userServices.RecaudoVehiculos(informacionDto);
-            return resultado.Result;
-        }
-        public async Task<string> RegistrarLibros(ComandoRegistroViewModel comandoRegistroViewModel)
+        // Registro de estudiantes
+        public async Task<string> RegistrarEstudiantes(ComandoRegistroViewModel comandoRegistroViewModel)
         {
             _comandogeneral.Parameters.Clear();
-            _comandogeneral.Parameters.AddWithValue("@nombre_autor", SqlDbType.VarChar).Value = comandoRegistroViewModel.nombreAutor;
-            _comandogeneral.Parameters.AddWithValue("@apellidos_autor", SqlDbType.VarChar).Value = comandoRegistroViewModel.apellidosAutor;
-            _comandogeneral.Parameters.AddWithValue("@nombre_editorial", SqlDbType.VarChar).Value = comandoRegistroViewModel.nombreEditorial;
-            _comandogeneral.Parameters.AddWithValue("@sede_editorial", SqlDbType.VarChar).Value = comandoRegistroViewModel.sedeEditorial;
-            _comandogeneral.Parameters.AddWithValue("@titulo_libro", SqlDbType.VarChar).Value = comandoRegistroViewModel.tituloLibro;
-            _comandogeneral.Parameters.AddWithValue("@sinopsis_libro", SqlDbType.VarChar).Value = comandoRegistroViewModel.sinopsisLibro;
-            _comandogeneral.Parameters.AddWithValue("@n_paginas_libro", SqlDbType.Int).Value = comandoRegistroViewModel.nPaginasLibro;
-            var resultado = await EjecutarFuncion(_comandogeneral, "insertar_datos");
+            _comandogeneral.Parameters.AddWithValue("@Nombres", SqlDbType.VarChar).Value = comandoRegistroViewModel.nombres;
+            _comandogeneral.Parameters.AddWithValue("@Apellidos", SqlDbType.VarChar).Value = comandoRegistroViewModel.apellidos;
+            _comandogeneral.Parameters.AddWithValue("@Identificacion", SqlDbType.Int).Value = comandoRegistroViewModel.identificacion;
+            _comandogeneral.Parameters.AddWithValue("@Edad", SqlDbType.Int).Value = comandoRegistroViewModel.edad;
+            _comandogeneral.Parameters.AddWithValue("@TipoLicencia", SqlDbType.VarChar).Value = comandoRegistroViewModel.tipoLicencia;
+            _comandogeneral.Parameters.Add("@Resultado", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
+            await EjecutarFuncion(_comandogeneral, "CrearEstudiante");
+            return _comandogeneral.Parameters["@Resultado"].Value.ToString();
+        }
+        // Inscripción de un módulo y una clase
+        public async Task<string> InscribirModuloClase(ComandoInscribirModuloClaseViewModel claseViewModel)
+        {
+            _comandogeneral.Parameters.Clear();
+            _comandogeneral.Parameters.AddWithValue("@IdEstudiante", SqlDbType.Int).Value = claseViewModel.idEstudiante;
+            _comandogeneral.Parameters.AddWithValue("@IdModulo", SqlDbType.Int).Value = claseViewModel.idModulo;
+            _comandogeneral.Parameters.AddWithValue("@IdClase", SqlDbType.Int).Value = claseViewModel.idClase;
+            _comandogeneral.Parameters.Add("@Resultado", SqlDbType.VarChar, 100).Direction = ParameterDirection.Output;
+            await EjecutarFuncion(_comandogeneral, "InscribirModuloClase");
+            return _comandogeneral.Parameters["@Resultado"].Value.ToString();
+        }
+        // Consulta de módulos y clases de un estudiante
+        public async Task<string> ConsultaModuloClaseEstudiante(int idEstudiante)
+        {
+            _comandogeneral.Parameters.Clear();
+            _comandogeneral.Parameters.AddWithValue("@IdEstudiante", SqlDbType.Int).Value = idEstudiante;
+            var resultado = await EjecutarFuncion(_comandogeneral, "ListarModuloClaseEstudiante");
             return resultado;
         }
 

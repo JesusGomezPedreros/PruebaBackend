@@ -10,43 +10,91 @@ namespace LBA_Services_Delegade_Biblioteca.Controllers
     public class PruebaController : Controller
     {
         private readonly IFachada _fachada;
-        delegate string delegadaObtenerToken();
-        delegate string delegadaConteoVehiculos(InformacionDto informacionDto);
-        delegate string delegadaRecaudoVehiculos(InformacionDto informacionDto);
-        delegate string delegadaRegistrarLibros(ComandoRegistroViewModel comandoRegistroViewModel);
+        delegate string delegadaConsultaEstudiantes();
+        delegate string delegadaConsultaModulos();
+        delegate string delegadaConsultaClases();
+        delegate string delegadaRegistrarEstudiantes(ComandoRegistroViewModel comandoRegistroViewModel);
+        delegate string delegadaInscribirModuloClase(ComandoInscribirModuloClaseViewModel claseViewModel);
+        delegate string delegadaConsultaModuloClaseEstudiante(int idEstudiante);
+
 
         public PruebaController(IFachada fachada)
         {
             _fachada= fachada;
         }
-        [HttpGet("ConsultaToken")]
-        public async Task<string> ObtenerToken()
+        [HttpGet("ConsultaEstudiantes")]
+        public async Task<string> ConsultaEstudiantes()
         {
-            delegadaObtenerToken delegada = delegate ()
+            // Declaración de una delegada que devuelve la consulta de estudiantes
+            delegadaConsultaEstudiantes delegada = delegate ()
             {
-                return _fachada.ObtenerToken().Result;
+                return _fachada.ConsultaEstudiantes().Result;
             };
+            // Ejecución de la delegada y retorno del resultado
             return delegada();
         }
 
-        [HttpPost("ConteoVehiculos")]
-        public async Task<string> ConteoVehiculos(InformacionDto informacionDto)
+        [HttpGet("ConsultaModulos")]
+        public async Task<string> ConsultaModulos()
         {
-            delegadaConteoVehiculos delegada = delegate (InformacionDto _informacionDto)
+            // Declaración de una delegada que devuelve la consulta de módulos
+            delegadaConsultaModulos delegada = delegate ()
             {
-                return _fachada.ConteoVehiculos(_informacionDto).Result;
+                return _fachada.ConsultaModulos().Result;
             };
-            return delegada(informacionDto);
+            // Ejecución de la delegada y retorno del resultado
+            return delegada();
         }
-        [HttpPost("RecaudoVehiculos")]
-        public async Task<string> RecaudoVehiculos(InformacionDto informacionDto)
+
+        [HttpGet("ConsultaClases")]
+        public async Task<string> ConsultaClases()
         {
-            delegadaRecaudoVehiculos delegada = delegate (InformacionDto _informacionDto)
+            // Declaración de una delegada que devuelve la consulta de clases
+            delegadaConsultaClases delegada = delegate ()
             {
-                return _fachada.RecaudoVehiculos(_informacionDto).Result;
+                return _fachada.ConsultaClases().Result;
             };
-            return delegada(informacionDto);
+            // Ejecución de la delegada y retorno del resultado
+            return delegada();
         }
+
+        [HttpPost("RegistrarEstudiantes")]
+        public async Task<string> RegistrarEstudiantes(ComandoRegistroViewModel comandoRegistroViewModel)
+        {
+            // Declaración de una delegada que registra estudiantes
+            delegadaRegistrarEstudiantes delegada = delegate (ComandoRegistroViewModel _comandoRegistroViewModel)
+            {
+                return _fachada.RegistrarEstudiantes(_comandoRegistroViewModel).Result;
+            };
+            // Ejecución de la delegada y retorno del resultado
+            return delegada(comandoRegistroViewModel);
+        }
+         
+        [HttpPost("InscribirModuloClase")]
+        public async Task<string> InscribirModuloClase(ComandoInscribirModuloClaseViewModel claseViewModel)
+        {
+            // Declaración de una delegada que inscribe un módulo y una clase
+            delegadaInscribirModuloClase delegada = delegate (ComandoInscribirModuloClaseViewModel _claseViewModel)
+            {
+                return _fachada.InscribirModuloClase(_claseViewModel).Result;
+            };
+            // Ejecución de la delegada y retorno del resultado
+            return delegada(claseViewModel);
+        }
+
+        [HttpGet("ConsultaModuloClaseEstudiante")]
+        public async Task<string> ConsultaModuloClaseEstudiante(int idEstudiante)
+        {
+            // Declaración de una delegada que consulta los módulos y clases de un estudiante
+            delegadaConsultaModuloClaseEstudiante delegada = delegate (int _idEstudiante)
+            {
+                return _fachada.ConsultaModuloClaseEstudiante(_idEstudiante).Result;
+            };
+            // Ejecución de la delegada y retorno del resultado
+            return delegada(idEstudiante);
+        }
+
+
 
     }
 }

@@ -8,24 +8,20 @@ namespace LBA_Negocio.Biblioteca
     public class ComandosPrueba : IComandosPrueba
     {
         private readonly IPruebaRepository _PruebaRepository;
-        public ComandosPrueba(IPruebaRepository bibliotecaRepository)
+        public ComandosPrueba(IPruebaRepository pruebaRepository)
         {
-            _PruebaRepository = bibliotecaRepository;
+            _PruebaRepository = pruebaRepository;
         }
-        public async Task<string> RegistrarLibros(ComandoRegistroViewModel comandoRegistroViewModel)
+        public async Task<string> RegistrarEstudiantes(ComandoRegistroViewModel comandoRegistroViewModel)
         {
-            string resultado = await _PruebaRepository.RegistrarLibros(comandoRegistroViewModel);
+            string resultado = await _PruebaRepository.RegistrarEstudiantes(comandoRegistroViewModel);
             return resultado;
         }
-        public async Task<string> ConteoVehiculos(InformacionDto informacionDto)
+        public async Task<string> InscribirModuloClase(ComandoInscribirModuloClaseViewModel claseViewModel)
         {
-            string resultado = await _PruebaRepository.ConteoVehiculos(informacionDto);
+            string resultado = await _PruebaRepository.InscribirModuloClase(claseViewModel);
             return resultado;
         }
-        public async Task<string> RecaudoVehiculos(InformacionDto informacionDto)
-        {
-            string resultado = await _PruebaRepository.RecaudoVehiculos(informacionDto);
-            return resultado;
-        }
+
     }
 }

@@ -5,8 +5,8 @@ namespace LBA_Negocio.Contratos
 {
     public interface IComandosPrueba
     {
-        Task<string> RegistrarLibros(ComandoRegistroViewModel comandoRegistroViewModel);
-        Task<string> ConteoVehiculos(InformacionDto informacionDto);
-        Task<string> RecaudoVehiculos(InformacionDto informacionDto);
+        Task<string> RegistrarEstudiantes(ComandoRegistroViewModel comandoRegistroViewModel);
+        Task<string> InscribirModuloClase(ComandoInscribirModuloClaseViewModel claseViewModel);
+
     }
 }

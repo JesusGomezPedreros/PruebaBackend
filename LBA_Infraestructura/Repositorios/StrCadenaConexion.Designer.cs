@@ -21,7 +21,7 @@ namespace LBA_Infraestructura.Repositorios {
 
         public string Cadena
         {
-            get => "Server=bibliotecatravel.database.windows.net; user id=server123; Password=Seguridad2023*; Database=sqlbiblioteca";
+            get => "Server=34.172.173.46; User Id=jesusgomez; Password=Seguridad2023*; Database=Prueba;";
 
         }
     }

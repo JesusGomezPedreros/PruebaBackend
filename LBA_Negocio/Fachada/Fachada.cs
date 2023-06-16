@@ -14,21 +14,31 @@ namespace LBA_Negocio.Fachada
             _consultaPrueba = consultaPrueba;
             _comandosPrueba = comandosPrueba;
         }
-        public Task<string> ObtenerToken()
+        public Task<string> ConsultaEstudiantes()
         {
-            return _consultaPrueba.ObtenerToken();
+            return _consultaPrueba.ConsultaEstudiantes();
         }
-        public Task<string> ConteoVehiculos(InformacionDto informacionDto)
+        public Task<string> ConsultaModulos()
         {
-            return _comandosPrueba.ConteoVehiculos(informacionDto);
+            return _consultaPrueba.ConsultaModulos();
         }
-        public Task<string> RecaudoVehiculos(InformacionDto informacionDto)
+        public Task<string> ConsultaClases()
         {
-            return _comandosPrueba.RecaudoVehiculos(informacionDto);
+            return _consultaPrueba.ConsultaClases();
         }
-        public Task<string> RegistrarLibros(ComandoRegistroViewModel comandoRegistroViewModel)
+        public Task<string> RegistrarEstudiantes(ComandoRegistroViewModel comandoRegistroViewModel)
         {
-            return _comandosPrueba.RegistrarLibros(comandoRegistroViewModel);
+            return _comandosPrueba.RegistrarEstudiantes(comandoRegistroViewModel);
         }
+        public Task<string> InscribirModuloClase(ComandoInscribirModuloClaseViewModel claseViewModel)
+        {
+            return _comandosPrueba.InscribirModuloClase(claseViewModel);
+        }
+        public  Task<string> ConsultaModuloClaseEstudiante(int idEstudiante)
+        {
+            var resultado =  _consultaPrueba.ConsultaModuloClaseEstudiante(idEstudiante);
+            return resultado;
+        }
+
     }
 }
